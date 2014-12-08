@@ -7,7 +7,6 @@ stock.data <- read.table("http://hopey.netfonds.no/tradedump.php?date=20141205&p
   skip = 2)[,1:2]
 
 # Reformat the dataset with cleaner date and time
-stock.data <- stock.data[,1:2]
 names(stock.data) <- c("Time", "Stock")
 year <- substr(stock.data$Time, 1, 4)
 month <- substr(stock.data$Time, 5, 6)
