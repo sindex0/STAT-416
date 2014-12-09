@@ -1,6 +1,9 @@
 source('dampedSinusoid.r')
 source('arModel.r')
 source('armaModel.r')
+source('laggedData.r')
+
+library(lmtest) # for DW Test & Box.test
 
 pend <- read.csv("pend_data.csv", header = T)
 names(pend) <- c("time", "x.pixels", "y.pixels")
@@ -50,6 +53,22 @@ plot.ts(pend$time, residuals, type="b", lwd = .5, cex = .2,
   ylab = "Model residuals (degrees)",
   main = "Residuals Plot in Time Series")
 legend("bottomright", "Theta (degrees)", pch = 19, col = "red") # Add legend
+
+##############################
+## Autocorrelation
+##############################
+
+lag <- laggedData(theta.i, TRUE)
+
+acf <- acf(lag, lag.max = 75, main = "")
+
+mod <- lm(theta.i[1:(length(theta.i)-1)] ~ lag)
+
+# Test for serial autocorrelation in lag-1
+dwtest(mod)$p.value
+
+# Test for serial autocorrelation in lag 1 to 75
+Box.test(acf$acf, lag = 75, type = "Ljung-Box")$p.value
 
 ##############################
 ## Auto-Regressive Models and Forecasts
