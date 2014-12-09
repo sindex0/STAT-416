@@ -1,12 +1,13 @@
 library(TTR) # for SWMA
 library(forecast) # for forecast.ARIMA & forecast.plot
 
-source("singleExponentialSmoothing.r")
+setwd("G:\\F-\\Fall 2014\\Stat 416\\Project\\Datasets")
 
 stock.data <- read.table("http://hopey.netfonds.no/tradedump.php?date=20141205&paper=FLIR.O&csv_format=txt",
   skip = 2)[,1:2]
 
 # Reformat the dataset with cleaner date and time
+stock.data <- stock.data[,1:2]
 names(stock.data) <- c("Time", "Stock")
 year <- substr(stock.data$Time, 1, 4)
 month <- substr(stock.data$Time, 5, 6)
@@ -18,6 +19,10 @@ seconds <- substr(stock.data$Time, 14,15)
 stock.data$Time <- paste(hours, ".", minutes, seconds, sep = "")
 stock.data <- data.frame(stock.data$Date, stock.data$Time, stock.data$Stock)
 names(stock.data) <- c("Date", "Time", "Stock")
+
+setwd("G:\\F-\\Fall 2014\\Stat 416\\Project\\Functions")
+
+source("singleExponentialSmoothing.r")
 
 start <- as.numeric(levels(stock.data$Time))[1]
 finish <- tail(as.numeric(levels(stock.data$Time)),1)
@@ -178,7 +183,7 @@ par(mfrow=c(2,1))
 acf(diff1, 150, main = "First-Differenced Signal")
 pacf(diff1, 150,main = "")
 
-my.arima <- arima(five.mins.avg[!is.na(five.mins.avg)], order = c(1, 2, 0))
+my.arima <- arima(five.mins.avg[!is.na(five.mins.avg)], order = c(1, 1, 0))
 
 par(mfrow=c(2,1))
 acf(my.arima$res, 150, main = "Model Residuals")
@@ -215,4 +220,4 @@ names(result) <- c("Stock @ 00:00hrs", "95% Lower", "95% Upper")
 
 # At the end of the day, I expect to make $31.85. I am
 # 95% confident that a number of stock I will make at the end
-# of the day is between $24.10 & $39.31.
+# of the day is between $31.63 & $32.07.
