@@ -1,5 +1,9 @@
-## Borrowed code from
-## http://www.cookbook-r.com/Manipulating_data/Calculating_a_moving_average/
+##### Source: http://www.cookbook-r.com/Manipulating_data/Calculating_a_moving_average/ ####
+# This function calculates a simple moving average smoothing on most recent n periods
+# and return the calculation.
+# x = time series data
+# n = periods
+# centered = Whether to calculate a central moving average or not
 movingAverage <- function(x, n=1, centered=FALSE) {
 
     if (centered) {
