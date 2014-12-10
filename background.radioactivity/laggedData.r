@@ -1,8 +1,8 @@
 # This function returns a vector of lagged values
 # ts = time series data
 # show.plot = display a lagged scatterplot to discover pattern
-# in which it indicates autocorrelation
-laggedData <- function(ts, show.plot = FALSE)
+# in which it'll indicate autocorrelation
+laggedData <- function(ts, show.plot = FALSE, pos = "topright")
 {
   n <- length(ts)
   lag <- rep(0, n)
@@ -23,7 +23,7 @@ laggedData <- function(ts, show.plot = FALSE)
     paste.r.sq <- paste("R^2 =", round(r.sq, 3))
     paste.model <- paste("y = ", paste.intercept, " - ", paste.slope,
       "x", sep = "")
-    legend("topright", c(paste.model, paste.r.sq), cex = .8)
+    legend(pos, c(paste.model, paste.r.sq), cex = .8)
   }
 
   return(lag)
